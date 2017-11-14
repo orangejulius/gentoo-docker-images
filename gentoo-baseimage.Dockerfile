@@ -24,6 +24,16 @@ FROM scratch
 WORKDIR /
 COPY --from=builder /gentoo/ /
 
-RUN emerge -e world # rebuld the world :)
+# install custom make.conf
+COPY make.conf /etc/portage/make.conf
+
+RUN emerge --sync
+
+# disable features that need ptrace during build
+RUN FEATURES="-sandbox -usersandbox" emerge -e world # rebuld the world :)
+
+RUN eselect news read # i hate this notification :P
+
+RUN mkdir -p /etc/portage/package.use /etc/portage/package.accept_keywords
 
 CMD ["/bin/bash"]
