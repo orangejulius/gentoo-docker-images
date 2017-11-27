@@ -8,28 +8,18 @@ WORKDIR /
 ARG ARCH=amd64
 ARG MICROARCH=amd64
 ARG SUFFIX
-#ARG DIST="http://distfiles.gentoo.org/releases/${ARCH}/autobuilds/"
-ARG DIST="http://172.17.0.1:8000/releases/${ARCH}/autobuilds/"
+ARG DIST="http://distfiles.gentoo.org/releases/${ARCH}/autobuilds/"
 ARG SIGNING_KEY="0xBB572E0E2D182910"
 
 COPY files/build-script.sh /
 
 RUN /bin/sh /build-script.sh
 
-
 # take the stage3 downloaded in the alpine image and use it as a new container base
 FROM scratch
 
-ARG SNAPSHOT_NAME="portage-latest.tar.xz"
-#ARG SNAPSHOT_DIST="http://distfiles.gentoo.org/snapshots"
-ARG SNAPSHOT_DIST="http://172.17.0.1:8000/snapshots"
-ARG SNAPSHOT_SIGNING_KEY="0xEC590EEAC9189250"
-
 WORKDIR /
 COPY --from=builder /gentoo/ /
-
-RUN ls -lh /usr/bin/gpg
-RUN which gpg
 
 # install custom make.conf
 COPY files/make.conf /etc/portage/make.conf

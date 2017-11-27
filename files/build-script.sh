@@ -47,13 +47,11 @@ wget https://www.gnupg.org/ftp/gcrypt/gnupg/gnupg-${GNUPG_VERSION}.tar.bz2
 wget https://www.gnupg.org/ftp/gcrypt/gnupg/gnupg-${GNUPG_VERSION}.tar.bz2.sig
 
 gpg --keyserver pgp.mit.edu --recv-keys 0x249B39D24F25E3B6
-#gpg --keyserver pgp.mit.edu --recv-keys 0x53B620D01CE0C630
 gpg --keyserver pgp.mit.edu --recv-keys 0x2071B08A33BD3F06
 gpg --verify gnupg-${GNUPG_VERSION}.tar.bz2.sig gnupg-${GNUPG_VERSION}.tar.bz2
 
 tar xvpf gnupg-${GNUPG_VERSION}.tar.bz2
 
-export CFLAGS="-static"
 export LDFLAGS="-static"
 cd gnupg-$GNUPG_VERSION
 ./autogen.sh
