@@ -27,15 +27,15 @@ COPY files/make.conf /etc/portage/make.conf
 # make directories for custom config
 RUN mkdir -p /etc/portage/package.use /etc/portage/package.accept_keywords
 
-COPY files/emerge-wrapper.sh /
+COPY files/emerge-wrapper.sh /usr/sbin/emerge-wrapper
 
 # install gpg for real
-RUN /emerge-wrapper.sh app-crypt/gnupg -j2
+RUN emerge-wrapper app-crypt/gnupg -j2
 
 # emerge world, once with no security settings changes
-RUN /emerge-wrapper.sh -e world -j2
+RUN emerge-wrapper -e world -j2
 
 # a few system things cannot be built in containers without this flag
-RUN FEATURES="-sandbox -usersandbox" /emerge-wrapper.sh --resume
+RUN FEATURES="-sandbox -usersandbox" emerge-wrapper --resume
 
 CMD ["/bin/bash"]

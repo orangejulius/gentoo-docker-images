@@ -25,5 +25,3 @@ FEATURES="-sandbox -usersandbox" emerge $@
 
 ## remove all traces of the ebuild tree to prevent large images
 rm -rf /usr/portage
-
-eselect news purge
