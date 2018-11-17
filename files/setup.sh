@@ -19,7 +19,12 @@ mkdir -p /usr/portage/distfiles /usr/portage/packages
 tar xpf "${SNAPSHOT_NAME}" -C /usr
 rm ${SNAPSHOT_NAME} ${SNAPSHOT_NAME}.gpgsig ${SNAPSHOT_NAME}.md5sum
 
-emerge $@
+# these features conflict with containers which already sandbox
+# for our purposes the dual sandboxing is not needed
+
+emerge app-crypt/gnupg
+emerge -e world || true
+FEATURES="-sandbox -usersandbox" emerge --resume
 
 ## remove all traces of the ebuild tree to prevent large images
 rm -rf /usr/portage

@@ -15,7 +15,6 @@ echo "Building Gentoo Container image for ${ARCH} ${SUFFIX} fetching from ${DIST
 # install required dependencies
 apk --no-cache add gnupg tar wget xz ca-certificates autoconf automake gettext gcc build-base libgcrypt-dev libgpg-error-dev libassuan-dev libksba-dev npth-dev gettext-dev
 
-
 wget -q -c "${DIST}/${STAGE3PATH}" "${DIST}/${STAGE3PATH}.CONTENTS" "${DIST}/${STAGE3PATH}.DIGESTS.asc"
 
 # verify downloaded stage 3 archive, using multiple keyservers if needed
@@ -28,7 +27,7 @@ gpg --keyserver hkps.pool.sks-keyservers.net --recv-keys ${SIGNING_KEY} \
 awk '/# SHA512 HASH/{getline; print}' ${STAGE3}.DIGESTS.asc | sha512sum -c
 
 # extract stage3 archive
-tar xjpf "${STAGE3}" --xattrs --numeric-owner
+tar xpf "${STAGE3}" --xattrs --numeric-owner
 
 # tell Gentoo we are in a docker world (i think)
 sed -i -e 's/#rc_sys=""/rc_sys="docker"/g' etc/rc.conf \
@@ -43,11 +42,11 @@ cd /root
 
 ## build a static gpg to bootstrap authentication of snapshots within the next step
 GNUPG_VERSION=1.4.22
+gpg --keyserver pgp.mit.edu --recv-keys 0x249B39D24F25E3B6
+gpg --keyserver pgp.mit.edu --recv-keys 0x2071B08A33BD3F06
 wget https://www.gnupg.org/ftp/gcrypt/gnupg/gnupg-${GNUPG_VERSION}.tar.bz2
 wget https://www.gnupg.org/ftp/gcrypt/gnupg/gnupg-${GNUPG_VERSION}.tar.bz2.sig
 
-gpg --keyserver pgp.mit.edu --recv-keys 0x249B39D24F25E3B6
-gpg --keyserver pgp.mit.edu --recv-keys 0x2071B08A33BD3F06
 gpg --verify gnupg-${GNUPG_VERSION}.tar.bz2.sig gnupg-${GNUPG_VERSION}.tar.bz2
 
 tar xvpf gnupg-${GNUPG_VERSION}.tar.bz2
