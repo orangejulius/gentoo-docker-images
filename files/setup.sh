@@ -11,8 +11,8 @@ wget -q -c "${SNAPSHOT_DIST}/${SNAPSHOT_NAME}" "${SNAPSHOT_DIST}/${SNAPSHOT_NAME
 # verify ebuild tree snapshot, similar to the archive
 gpg --keyserver hkps.pool.sks-keyservers.net --recv-keys ${SNAPSHOT_SIGNING_KEY} \
  || gpg --keyserver keys.gnupg.net --recv-keys ${SNAPSHOT_SIGNING_KEY} \
- || gpg --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys ${SNAPSHOT_SIGNING_KEY} \
- && gpg --verify "${SNAPSHOT_NAME}.gpgsig" "${SNAPSHOT_NAME}"
+ || gpg --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys ${SNAPSHOT_SIGNING_KEY}
+gpg --verify "${SNAPSHOT_NAME}.gpgsig" "${SNAPSHOT_NAME}"
 
 # extract portage snapshot and clean up
 mkdir -p /usr/portage/distfiles /usr/portage/packages

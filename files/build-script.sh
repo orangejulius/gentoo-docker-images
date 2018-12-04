@@ -20,8 +20,8 @@ wget -q -c "${DIST}/${STAGE3PATH}" "${DIST}/${STAGE3PATH}.CONTENTS" "${DIST}/${S
 # verify downloaded stage 3 archive, using multiple keyservers if needed
 gpg --keyserver hkps.pool.sks-keyservers.net --recv-keys ${SIGNING_KEY} \
  || gpg --keyserver keys.gnupg.net --recv-keys ${SIGNING_KEY} \
- || gpg --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys ${SIGNING_KEY} \
- && gpg --verify "${STAGE3}.DIGESTS.asc"
+ || gpg --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys ${SIGNING_KEY}
+gpg --verify "${STAGE3}.DIGESTS.asc"
 
 
 awk '/# SHA512 HASH/{getline; print}' ${STAGE3}.DIGESTS.asc | sha512sum -c
